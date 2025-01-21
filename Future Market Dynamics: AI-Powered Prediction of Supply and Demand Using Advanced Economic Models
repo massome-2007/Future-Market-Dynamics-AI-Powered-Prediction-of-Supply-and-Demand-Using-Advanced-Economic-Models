@@ -1,0 +1,67 @@
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+# Generate synthetic data
+np.random.seed(42)
+prices = np.linspace(10, 100, 100)
+demand_quantities = 1000 / prices + np.random.normal(0, 10, 100)  # Demand curve
+supply_quantities = prices * 0.8 + np.random.normal(0, 10, 100)   # Supply curve
+inflation_rates = np.random.normal(2, 0.5, 100)  # Synthetic inflation rates
+unemployment_rates = np.random.normal(5, 1, 100)  # Synthetic unemployment rates
+
+# Create DataFrame
+data = pd.DataFrame({
+    'Price': prices,
+    'DemandQuantity': demand_quantities,
+    'SupplyQuantity': supply_quantities,
+    'InflationRate': inflation_rates,
+    'UnemploymentRate': unemployment_rates
+})
+
+# Define features and target variable
+X = data[['Price', 'InflationRate', 'UnemploymentRate']]
+y_demand = data['DemandQuantity']
+y_supply = data['SupplyQuantity']
+
+# Train linear regression models for demand and supply
+model_demand = LinearRegression()
+model_supply = LinearRegression()
+model_demand.fit(X, y_demand)
+model_supply.fit(X, y_supply)
+
+# Predict future quantities for a new set of prices and economic conditions
+future_prices = np.linspace(10, 100, 20)
+future_inflation = np.random.normal(2, 0.5, 20)
+future_unemployment = np.random.normal(5, 1, 20)
+future_data = pd.DataFrame({
+    'Price': future_prices,
+    'InflationRate': future_inflation,
+    'UnemploymentRate': future_unemployment
+})
+
+predicted_demand = model_demand.predict(future_data)
+predicted_supply = model_supply.predict(future_data)
+
+# Find equilibrium price and quantity
+equilibrium_idx = np.argmin(abs(predicted_demand - predicted_supply))
+equilibrium_price = future_prices[equilibrium_idx]
+equilibrium_quantity = predicted_demand[equilibrium_idx]
+
+# Plotting results
+plt.figure(figsize=(12, 6))
+plt.plot(prices, demand_quantities, 'bo', label='Actual Demand')
+plt.plot(prices, supply_quantities, 'ro', label='Actual Supply')
+plt.plot(future_prices, predicted_demand, 'b--', label='Predicted Demand')
+plt.plot(future_prices, predicted_supply, 'r--', label='Predicted Supply')
+plt.axvline(equilibrium_price, color='green', linestyle='--', label='Equilibrium Price')
+plt.axhline(equilibrium_quantity, color='purple', linestyle='--', label='Equilibrium Quantity')
+plt.xlabel('Price')
+plt.ylabel('Quantity')
+plt.title('Future Market Dynamics: Supply and Demand Prediction')
+plt.legend()
+plt.show()
+
+print(f"Equilibrium Price: {equilibrium_price:.2f}")
+print(f"Equilibrium Quantity: {equilibrium_quantity:.2f}")

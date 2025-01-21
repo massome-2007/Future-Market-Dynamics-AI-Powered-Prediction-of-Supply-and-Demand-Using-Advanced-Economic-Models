@@ -1,4 +1,4 @@
-# Future-Market-Dynamics-AI-Powered-Prediction-of-Supply-and-Demand-Using-Advanced-Economic-Models
+# Future Market Dynamics: AI-Powered Prediction of Supply and Demand Using Advanced Economic Models
 Project Overview:
 This project uses machine learning to predict future market dynamics by incorporating advanced supply and demand concepts such as elasticity, equilibrium, and the Phillips Curve. Key features include price elasticity of demand, price elasticity of supply, market equilibrium, and the influence of inflation and unemployment on supply and demand.
 
